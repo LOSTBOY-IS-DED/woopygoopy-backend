@@ -6,6 +6,7 @@ import socketHandler from "./socket/socketHandler";
 import prisma from "./config/prisma";
 import leaderboardRouter from "./routes/leaderboardRoutes";
 import userRouter from "./routes/userRoutes";
+import getUser from "./routes/getUserRoute";
 
 const app = express();
 const server = http.createServer(app);
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.use('/api/user', userRouter);
 app.use('/api/leaderboard', leaderboardRouter);
+app.use('/api/user-details', getUser)
 
 socketHandler(io, prisma);
 
