@@ -19,6 +19,7 @@ model User {
   house   House  @relation(fields: [houseId], references: [id])
   houseId String
   score   Int    @default(0)
+  password String  
 }
 
 model House {
