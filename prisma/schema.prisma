@@ -14,8 +14,16 @@ datasource db {
 }
 
 model User {
-  uid       String        @id @default(uuid())
-  name      String        
-  password  String
-  email     String
+  id      String @id @default(uuid())
+  name    String
+  house   House  @relation(fields: [houseId], references: [id])
+  houseId String
+  score   Int    @default(0)
+}
+
+model House {
+  id     String @id @default(uuid())
+  name   String @unique
+  points Int    @default(0)
+  users  User[]
 }
