@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { PrismaClient } from '@prisma/client';
 import { Router } from 'express';
 
@@ -7,12 +7,13 @@ const userRouter = Router();
 
 userRouter.post('/register', async (req: any, res: any) => {
   try {
-    const { name, house, password } = req.body;
+    const { name, email, house, password } = req.body;
 
-    if (!name || !house || !password) {
+    if (!name || !house || !password || !email) {
       return res.status(400).json({ error: 'Name, house, and password are required' });
     }
 
+    console.log(req.body)
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -25,7 +26,7 @@ userRouter.post('/register', async (req: any, res: any) => {
 
     // Create user
     const user = await prisma.user.create({
-      data: { name, houseId: houseRecord.id, password: hashedPassword },
+      data: { name, houseId: houseRecord.id, password: hashedPassword, email },
     });
 
     // Update house points by summing all user scores in the house
