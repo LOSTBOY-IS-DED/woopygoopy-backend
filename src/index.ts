@@ -9,6 +9,8 @@ import userRouter from "./routes/registerRoute";
 import getUser from "./routes/getUserRoute";
 import loginRouter from "./routes/loginRoute";
 import setPlantRouter from "./routes/setPlant";
+import getPlantRouter from "./routes/getPlants";
+import userDetailsRouter from "./routes/getUserRoute";
 
 const app = express();
 const server = http.createServer(app);
@@ -18,12 +20,15 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/user/register", userRouter);
+app.use("/api/user/details", userDetailsRouter);
 app.use("/api/leaderboard", leaderboardRouter);
 app.use("/api/user-details", getUser);
 app.use("/api/user/login", loginRouter);
-app.use("/api/user/set", setPlantRouter);
+app.use("/api/user/set-plant", setPlantRouter);
+app.use("/api/user/get-plant", getPlantRouter);
+
 
 socketHandler(io, prisma);
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
