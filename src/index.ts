@@ -11,6 +11,7 @@ import loginRouter from "./routes/loginRoute";
 import setPlantRouter from "./routes/setPlant";
 import getPlantRouter from "./routes/getPlants";
 import userDetailsRouter from "./routes/getUserRoute";
+import getScore from "./routes/getScore";
 
 const app = express();
 const server = http.createServer(app);
@@ -26,6 +27,7 @@ app.use("/api/user-details", getUser);
 app.use("/api/user/login", loginRouter);
 app.use("/api/user/set-plant", setPlantRouter);
 app.use("/api/user/get-plant", getPlantRouter);
+app.use("/api/user/get-score", getScore);
 
 
 socketHandler(io, prisma);
