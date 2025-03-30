@@ -32,9 +32,9 @@ model House {
 }
 
 model PlantedTrees {
-  id        String   @id @default(uuid())
+  id        String   @id 
   user      User     @relation(fields: [emailId], references: [id])
-  emailId    String
+  emailId    String @default(uuid())
   latitude  Float
   longitude Float
   plantedAt DateTime @default(now()) 
