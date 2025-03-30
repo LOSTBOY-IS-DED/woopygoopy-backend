@@ -24,6 +24,13 @@ userRouter.post('/', async (req: any, res: any) => {
       houseRecord = await prisma.house.create({ data: { name: house } });
     }
 
+    // Check if email already exists
+    const existingUser = await prisma.user.findUnique({ where: { email } });
+
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email is already in use' });
+    }
+
     // Create user
     const user = await prisma.user.create({
       data: { name, houseId: houseRecord.id, password: hashedPassword, email },
