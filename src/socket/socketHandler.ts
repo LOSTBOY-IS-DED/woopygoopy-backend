@@ -7,16 +7,15 @@ const socketHandler = (io: Server, prisma: PrismaClient) => {
   io.on('connection', (socket: Socket) => {
     console.log('User connected:', socket.id);
 
-    socket.on('update_location', ({ userId, latitude, longitude }) => {
-      users[userId] = { latitude, longitude };
+    socket.on('update_location', ({ userEmail, latitude, longitude }) => {
+      if (!userEmail) return;
+      users[userEmail] = { latitude, longitude };
 
       io.emit('location_update', users);
     });
 
     socket.on('disconnect', () => {
       console.log('User disconnected:', socket.id);
-      delete users[socket.id];
-      io.emit('location_update', users);
     });
   });
 };
