@@ -10,6 +10,7 @@ import getUser from "./routes/getUserRoute";
 import loginRouter from "./routes/loginRoute";
 import setPlantRouter from "./routes/setPlant";
 import getPlantRouter from "./routes/getPlants";
+import userDetailsRouter from "./routes/getUserRoute";
 
 const app = express();
 const server = http.createServer(app);
@@ -19,6 +20,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/user/register", userRouter);
+app.use("/api/user/details", userDetailsRouter);
 app.use("/api/leaderboard", leaderboardRouter);
 app.use("/api/user-details", getUser);
 app.use("/api/user/login", loginRouter);
