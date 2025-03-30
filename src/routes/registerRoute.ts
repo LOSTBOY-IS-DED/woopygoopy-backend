@@ -5,7 +5,7 @@ import { Router } from 'express';
 const prisma = new PrismaClient();
 const userRouter = Router();
 
-userRouter.post('/register', async (req: any, res: any) => {
+userRouter.post('/', async (req: any, res: any) => {
   try {
     const { name, email, house, password } = req.body;
 
@@ -42,6 +42,7 @@ userRouter.post('/register', async (req: any, res: any) => {
 
     res.status(201).json(user);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });

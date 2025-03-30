@@ -2,33 +2,21 @@ import { Server, Socket } from 'socket.io';
 import { PrismaClient } from '@prisma/client';
 
 const socketHandler = (io: Server, prisma: PrismaClient) => {
+  const users: Record<string, { latitude: number; longitude: number }> = {};
+
   io.on('connection', (socket: Socket) => {
     console.log('User connected:', socket.id);
 
-    socket.on('task_completed', async ({ userId, points }: { userId: string; points: number }) => {
-      const user = await prisma.user.findUnique({ where: { id: userId } });
-      console.log(user)
-      if (!user) return;
+    socket.on('update_location', ({ userEmail, latitude, longitude }) => {
+      if (!userEmail) return;
+      users[userEmail] = { latitude, longitude };
 
-      await prisma.user.update({
-        where: { id: userId },
-        data: { score: { increment: points } },
-      });
-
-      await prisma.house.update({
-        where: { id: user.houseId },
-        data: { points: { increment: points } },
-      });
-
-      const leaderboard = await prisma.house.findMany({
-        select: { name: true, points: true },
-        orderBy: { points: 'desc' },
-      });
-
-      io.emit('leaderboard_update', leaderboard);
+      io.emit('location_update', users);
     });
 
-    socket.on('disconnect', () => console.log('User disconnected:', socket.id));
+    socket.on('disconnect', () => {
+      console.log('User disconnected:', socket.id);
+    });
   });
 };
 
