@@ -17,14 +17,26 @@ setPlantRouter.post("/", async (req: Request, res: Response): Promise<any> => {
 
     const tree = await prisma.plantedTrees.create({
       data: {
-        emailId,  
+        emailId,
         latitude,
         longitude,
       },
     });
 
+    const treeCount = await prisma.plantedTrees.count({
+      where: { emailId },
+    });
+
+    console.log(treeCount)
+    const newScore = treeCount * 10;
+
+    await prisma.user.update({
+      where: { email: emailId },
+      data: { score: newScore },
+    });
+
     return res.status(201).json({
-      message: "Tree planted successfully",
+      message: "Tree planted successfully, score updated",
       data: tree,
     });
   } catch (error) {
