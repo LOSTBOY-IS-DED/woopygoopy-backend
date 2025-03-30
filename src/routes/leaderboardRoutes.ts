@@ -3,7 +3,7 @@ import prisma from '../config/prisma.js';
 
 const leaderboardRouter = Router();
 
-leaderboardRouter.get('/get', async (req, res) => {
+leaderboardRouter.get('/', async (req, res) => {
   const leaderboard = await prisma.house.findMany({
     select: { name: true, points: true },
     orderBy: { points: 'desc' },
