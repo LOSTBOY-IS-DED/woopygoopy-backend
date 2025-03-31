@@ -12,6 +12,7 @@ import setPlantRouter from "./routes/setPlant";
 import getPlantRouter from "./routes/getPlants";
 import userDetailsRouter from "./routes/getUserRoute";
 import getScore from "./routes/getScore";
+import getImageResponseRouter from "./routes/isPlant";
 
 const app = express();
 const server = http.createServer(app);
@@ -28,6 +29,7 @@ app.use("/api/user/login", loginRouter);
 app.use("/api/user/set-plant", setPlantRouter);
 app.use("/api/user/get-plant", getPlantRouter);
 app.use("/api/user/get-score", getScore);
+app.use("/api/plant-detector", getImageResponseRouter)
 
 
 socketHandler(io, prisma);
