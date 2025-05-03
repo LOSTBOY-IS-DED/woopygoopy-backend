@@ -1,5 +1,4 @@
-import pkg from '@typescript-eslint/eslint-plugin';
-const eslintPlugin = pkg;  // Directly assign the plugin package
+import eslintPlugin from '@typescript-eslint/eslint-plugin';
 import parser from '@typescript-eslint/parser';
 
 export default {
@@ -8,7 +7,7 @@ export default {
     parser,
   },
   plugins: {
-    '@typescript-eslint': eslintPlugin,  // Correctly assign the plugin here
+    '@typescript-eslint': eslintPlugin,
   },
   rules: {
     '@typescript-eslint/explicit-function-return-type': 'warn',
