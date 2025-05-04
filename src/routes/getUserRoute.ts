@@ -20,6 +20,7 @@ userDetailsRouter.get('/', async (req: Request, res: Response) => {
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: 'Failed to retrieve user details' });
+    console.log(error);
   }
 });
 

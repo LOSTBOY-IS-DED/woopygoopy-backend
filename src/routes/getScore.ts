@@ -1,14 +1,18 @@
 import { PrismaClient } from '@prisma/client';
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
 
 const prisma = new PrismaClient();
 const getScore = Router();
 
-getScore.get('/', async (req: any, res: any) => {
+type Query = {
+  emailId?: string;
+}
+
+getScore.get('/', async (req: Request<{} , {} , {} , Query>, res: Response) : Promise<void> => {
   const emailId = req.query.emailId as string;
 
   if (!emailId) {
-    return res.status(400).json({ error: "Email ID is required" });
+    res.status(400).json({ error: "Email ID is required" });
   }
 
   try {
@@ -27,14 +31,14 @@ getScore.get('/', async (req: any, res: any) => {
       select: { score: true },
     });
 
-    return res.status(200).json({
+      res.status(200).json({
       message: "Score updated successfully",
       score: user.score,
     });
 
   } catch (error) {
     console.error("Error:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+   res.status(500).json({ error: "Internal Server Error" });
   }
 });
 

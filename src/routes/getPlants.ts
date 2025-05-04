@@ -1,26 +1,38 @@
 import { PrismaClient } from '@prisma/client';
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
 
 const prisma = new PrismaClient();
 const getPlantRouter = Router();
 
-getPlantRouter.get('/', async (req: any, res: any) => {
-  try {
-    const emailId = req.query.emailId as string;
+// Type for query parameters
+type Query = {
+  emailId?: string;
+};
 
-    if (!emailId) {
-      return res.status(400).json({ error: "Email ID is required" });
+getPlantRouter.get(
+  '/',
+  async (
+    req: Request<{}, {}, {}, Query>,
+    res: Response
+  ): Promise<void> => {
+    try {
+      const { emailId } = req.query;
+
+      if (!emailId) {
+        res.status(400).json({ error: "Email ID is required" });
+        return;
+      }
+
+      const plants = await prisma.plantedTrees.findMany({
+        where: { emailId },
+      });
+
+      res.status(200).json(plants);
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ error: "Internal Server Error" });
     }
-
-    const plants = await prisma.plantedTrees.findMany({
-      where: { emailId },
-    });
-
-    return res.status(200).json(plants);
-  } catch (error) {
-    console.error("Error:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
   }
-});
+);
 
 export default getPlantRouter;
