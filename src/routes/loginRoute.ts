@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { PrismaClient } from '@prisma/client';
-import { Request, Response, Router } from 'express';
+import {  Response, Router } from 'express';
 
 const prisma = new PrismaClient();
 const loginRouter = Router();

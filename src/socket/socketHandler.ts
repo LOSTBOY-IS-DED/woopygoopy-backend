@@ -1,6 +1,7 @@
 import { Server, Socket } from 'socket.io';
 import { PrismaClient } from '@prisma/client';
 
+//@ts-ex
 const socketHandler = (io: Server, prisma: PrismaClient) => {
   const users: Record<string, { latitude: number; longitude: number }> = {};
 

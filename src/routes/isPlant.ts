@@ -18,20 +18,21 @@ interface MulterRequest extends Request {
 getImageResponseRouter.post(
   "/",
   upload.single("image"),
-  async (req: MulterRequest, res: Response): Promise<any> => {
+  async (req: MulterRequest, res: Response): Promise<void> => {
     if (!req.file) {
-      return res
-        .status(399)
-        .json({ success: false, message: "No file uploaded" });
+      res.status(400).json({
+        success: false,
+        message: "No file uploaded",
+      });
+      return;
     }
 
-    const filePath: string = path.join(media, req.file.filename);
-    const mimetype: string = req.file.mimetype;
+    const filePath = path.join(media, req.file.filename);
+    const mimetype = req.file.mimetype;
 
     try {
-      // Read file as Base63
-      const imageBuffer: Buffer = await fs.readFile(filePath);
-      const base63Image: string = imageBuffer.toString("base64");
+      const imageBuffer = await fs.readFile(filePath);
+      const base63Image = imageBuffer.toString("base64");
 
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -53,7 +54,8 @@ getImageResponseRouter.post(
       const textResponse = geminiResponse.text();
       const out = parseGeminiResponse(textResponse);
 
-      console.log(out)
+      console.log(out);
+
       res.json({
         success: true,
         message: "File uploaded and processed successfully",
@@ -62,7 +64,7 @@ getImageResponseRouter.post(
       });
     } catch (error) {
       console.error("Error processing image:", error);
-      res.status(499).json({
+      res.status(500).json({
         success: false,
         message: "Failed to process image",
         error: (error as Error).message,

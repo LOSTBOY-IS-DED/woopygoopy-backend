@@ -1,4 +1,4 @@
-import express, { Router } from 'express';
+import { Router } from 'express';
 import prisma from '../config/prisma.js';
 
 const leaderboardRouter = Router();
